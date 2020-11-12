@@ -1,22 +1,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    private var viewModel = ViewModel()
+    @SceneStorage("selectedView") var selectedView: String?
     
     var body: some View {
-        Button("Fetch developers") {
-            let url = URL(string: "https://jsonblob.com/api/jsonBlob/2fc11296-2375-11eb-a22c-6b6a9b841ba4")!
-            viewModel.fetch(url, defaultValue: Developer.example) { (devs) in
-                DispatchQueue.main.async {
-                    print(devs[0].social)
+        TabView(selection: $selectedView) {
+            HomeView()
+                .tag(HomeView.tag)
+                .tabItem {
+                    Image(systemName: "house")
                 }
-            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static var dataController = DataController.preview
+    static var viewModel = ViewModel(dataController: DataController())
+    
     static var previews: some View {
         ContentView()
+            .environment(\.managedObjectContext, dataController.container.viewContext)
+            .environmentObject(dataController)
+            .environmentObject(viewModel)
     }
 }

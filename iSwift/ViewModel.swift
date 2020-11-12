@@ -1,26 +1,19 @@
 import SwiftUI
-import Combine
 
-
-class ViewModel {
-    var dataController: DataController
-    private var requests = Set<AnyCancellable>()
+class ViewModel: ObservableObject {
+    @Published var developers = [Developer]()
+    @Published var articles = [Article]()
+    private var networkManager: NetworkManager
     
-    init() {
-        dataController = DataController()
+    init(dataController: DataController) {
+        networkManager = NetworkManager(dataController: dataController)
+        getDevelopers()
     }
     
-    func fetch<T: Decodable>(_ url: URL, defaultValue: T,completion: @escaping (T) -> Void) {
-        let decoder = JSONDecoder()
-        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = dataController.container.viewContext
-        
-        URLSession.shared
-            .dataTaskPublisher(for: url)
-            .retry(1)
-            .map(\.data)
-            .decode(type: T.self, decoder: decoder)
-            .replaceError(with: defaultValue)
-            .sink(receiveValue: completion)
-            .store(in: &requests)
+    func getDevelopers() {
+        let url = URL(string: "https://jsonblob.com/api/jsonBlob/2fc11296-2375-11eb-a22c-6b6a9b841ba4")!
+        networkManager.fetch(url, defaultValue: Developer.example) { [unowned self] (devs) in
+            self.developers = devs
+        }
     }
 }

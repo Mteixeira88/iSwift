@@ -1,17 +1,25 @@
-//
-//  iSwiftApp.swift
-//  iSwift
-//
-//  Created by Miguel Teixeira on 11/11/2020.
-//
-
 import SwiftUI
 
 @main
 struct iSwiftApp: App {
+    @StateObject private var viewModel: ViewModel
+    @StateObject private var dataController: DataController
+    
+    init() {
+        let dataController = DataController()
+        _dataController = StateObject(wrappedValue: dataController)
+        
+        let vm = ViewModel(dataController: dataController)
+        _viewModel = StateObject(wrappedValue: vm)
+        
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(dataController)
+                .environmentObject(viewModel)
         }
     }
 }
