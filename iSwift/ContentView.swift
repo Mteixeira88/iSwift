@@ -16,7 +16,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var dataController = DataController.preview
-    static var viewModel = ViewModel(dataController: DataController())
+    static var viewModel = ViewModel(dataController: dataController)
     
     static var previews: some View {
         ContentView()

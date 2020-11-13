@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Article" representedClassName=".Article" syncable="YES" codeGenerationType="category">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Article" representedClassName=".Article" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <relationship name="additionalInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArticleInfo" inverseName="article" inverseEntity="ArticleInfo"/>
         <relationship name="content" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ArticleContent" inverseName="article" inverseEntity="ArticleContent"/>
-        <relationship name="developer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer" inverseName="articles" inverseEntity="Developer"/>
+        <relationship name="developer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer_" inverseName="articles" inverseEntity="Developer_"/>
     </entity>
-    <entity name="ArticleContent" representedClassName=".ArticleContent" syncable="YES" codeGenerationType="category">
+    <entity name="ArticleContent" representedClassName=".ArticleContent" syncable="YES" codeGenerationType="class">
         <attribute name="detail" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="link" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="article" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="content" inverseEntity="Article"/>
     </entity>
-    <entity name="ArticleInfo" representedClassName=".ArticleInfo" syncable="YES" codeGenerationType="category">
+    <entity name="ArticleInfo" representedClassName=".ArticleInfo" syncable="YES" codeGenerationType="class">
         <attribute name="detail" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="article" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="additionalInfo" inverseEntity="Article"/>
     </entity>
-    <entity name="Developer" representedClassName=".Developer" syncable="YES" codeGenerationType="category">
+    <entity name="Developer_" representedClassName=".Developer_" syncable="YES" codeGenerationType="class">
         <attribute name="background" optional="YES" attributeType="String"/>
         <attribute name="dev" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="profilePic" optional="YES" attributeType="String"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="developer" inverseEntity="Article"/>
         <relationship name="social" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Social" inverseName="developer" inverseEntity="Social"/>
     </entity>
-    <entity name="Social" representedClassName=".Social" syncable="YES" codeGenerationType="category">
+    <entity name="Social" representedClassName=".Social" syncable="YES" codeGenerationType="class">
         <attribute name="github" optional="YES" attributeType="String"/>
         <attribute name="twitter" optional="YES" attributeType="String"/>
-        <relationship name="developer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer" inverseName="social" inverseEntity="Developer"/>
+        <relationship name="developer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Developer_" inverseName="social" inverseEntity="Developer_"/>
     </entity>
     <elements>
-        <element name="Article" positionX="-41.62109375" positionY="-7.24609375" width="128" height="103"/>
-        <element name="ArticleContent" positionX="111.41015625" positionY="156.8046875" width="128" height="118"/>
-        <element name="ArticleInfo" positionX="133.80859375" positionY="-116.27734375" width="128" height="88"/>
-        <element name="Developer" positionX="-267.40625" positionY="-22" width="128" height="133"/>
-        <element name="Social" positionX="-457.5" positionY="23.109375" width="128" height="88"/>
+        <element name="Article" positionX="-41.62109375" positionY="-7.24609375" width="128" height="89"/>
+        <element name="ArticleContent" positionX="111.41015625" positionY="156.8046875" width="128" height="104"/>
+        <element name="ArticleInfo" positionX="133.80859375" positionY="-116.27734375" width="128" height="74"/>
+        <element name="Social" positionX="-457.5" positionY="23.109375" width="128" height="74"/>
+        <element name="Developer_" positionX="-261" positionY="36" width="128" height="134"/>
     </elements>
 </model>

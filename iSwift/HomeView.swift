@@ -1,25 +1,20 @@
-//
-//  HomeView.swift
-//  iSwift
-//
-//  Created by Miguel Teixeira on 12/11/2020.
-//
-
 import SwiftUI
 
 struct HomeView: View {
     static let tag: String? = "Home"
     
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
         
-        if viewModel.developers.isEmpty {
+        if viewModel.isLoading {
             ProgressView()
         } else {
             List {
                 ForEach(viewModel.developers) { dev in
-                    Text(dev.dev!)
+                    Text(dev.dev ?? "No dev")
                 }
             }
         }
