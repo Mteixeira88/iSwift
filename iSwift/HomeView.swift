@@ -12,10 +12,18 @@ struct HomeView: View {
         if viewModel.isLoading {
             ProgressView()
         } else {
-            List {
-                ForEach(viewModel.developers) { dev in
-                    Text(dev.dev ?? "No dev")
+            NavigationView {
+                List {
+                    ForEach(viewModel.developers) { dev in
+                        VStack(alignment: .leading) {
+                            Text(dev.name ?? "No dev")
+                            NavigationLink(destination: Text(dev.name ?? "No dev")) {
+                                Text(dev.linkId ?? "No dev")
+                            }
+                        }
+                    }
                 }
+                .navigationTitle(Text("Home"))
             }
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Developer" representedClassName=".Developer" syncable="YES" codeGenerationType="category">
         <attribute name="background" optional="YES" attributeType="String"/>
         <attribute name="dev" optional="YES" attributeType="String"/>
@@ -8,6 +8,13 @@
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="social" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Social" inverseName="developer" inverseEntity="Social"/>
         <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Topic" inverseName="developer" inverseEntity="Topic"/>
+    </entity>
+    <entity name="Main" representedClassName=".Main" syncable="YES" codeGenerationType="category">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="linkId" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="Social" representedClassName=".Social" syncable="YES" codeGenerationType="category">
         <attribute name="github" optional="YES" attributeType="String"/>
@@ -21,7 +28,8 @@
     </entity>
     <elements>
         <element name="Developer" positionX="-36" positionY="9" width="128" height="134"/>
-        <element name="Topic" positionX="-9" positionY="72" width="128" height="74"/>
         <element name="Social" positionX="18" positionY="108" width="128" height="74"/>
+        <element name="Topic" positionX="-9" positionY="72" width="128" height="74"/>
+        <element name="Main" positionX="-9" positionY="90" width="128" height="104"/>
     </elements>
 </model>
