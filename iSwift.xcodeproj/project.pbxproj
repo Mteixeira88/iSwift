@@ -90,26 +90,16 @@
 		7062E04C255C3317003283DB /* iSwift */ = {
 			isa = PBXGroup;
 			children = (
-				7062BD8B25629359006D1128 /* Sequence+Ext.swift */,
+				70CC8A8C25632D2E00B204D6 /* Utils */,
+				70CC8A8B25632D2500B204D6 /* Managers */,
+				70CC8A8A25632CDC00B204D6 /* Views */,
+				70CC8A8925632CCE00B204D6 /* Controllers */,
+				70CC8A8825632CC100B204D6 /* ViewModel */,
+				70CC8A8725632CB400B204D6 /* Models */,
 				CC7249BC255D86660054C875 /* CoreData */,
-				7062E04D255C3317003283DB /* iSwiftApp.swift */,
-				7062E04F255C3317003283DB /* ContentView.swift */,
-				CC4A5B65255D950A0008889D /* NetworkManager.swift */,
 				7062E051255C3318003283DB /* Assets.xcassets */,
 				7062E056255C3318003283DB /* Info.plist */,
-				CC20FF81255EB83F00377478 /* Data.xcdatamodeld */,
 				7062E053255C3318003283DB /* Preview Content */,
-				CCC97FD3255D6D8C000D7C0B /* DataController.swift */,
-				CC7249D7255D8AC00054C875 /* ViewModel.swift */,
-				704252692562DD530047D030 /* ListSlidePageView.swift */,
-				CC4A5B6B255D98920008889D /* HomeView.swift */,
-				CC0E0F62255EA2C70086C08D /* Constants.swift */,
-				7062BD7425602148006D1128 /* Utils.swift */,
-				7062BD81256278FF006D1128 /* FullSlidePageView.swift */,
-				7062BD842562795E006D1128 /* PageViewController.swift */,
-				7042526D2562F7A60047D030 /* SlideModels.swift */,
-				704252802562F8D70047D030 /* ImageLoader.swift */,
-				704252832562F92E0047D030 /* AsyncImage.swift */,
 			);
 			path = iSwift;
 			sourceTree = "<group>";
@@ -122,9 +112,67 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		70CC8A8725632CB400B204D6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7042526D2562F7A60047D030 /* SlideModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		70CC8A8825632CC100B204D6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC7249D7255D8AC00054C875 /* ViewModel.swift */,
+				704252802562F8D70047D030 /* ImageLoader.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		70CC8A8925632CCE00B204D6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CCC97FD3255D6D8C000D7C0B /* DataController.swift */,
+				7062BD842562795E006D1128 /* PageViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		70CC8A8A25632CDC00B204D6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				704252692562DD530047D030 /* ListSlidePageView.swift */,
+				7062E04D255C3317003283DB /* iSwiftApp.swift */,
+				7062E04F255C3317003283DB /* ContentView.swift */,
+				CC4A5B6B255D98920008889D /* HomeView.swift */,
+				7062BD81256278FF006D1128 /* FullSlidePageView.swift */,
+				704252832562F92E0047D030 /* AsyncImage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		70CC8A8B25632D2500B204D6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CC4A5B65255D950A0008889D /* NetworkManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		70CC8A8C25632D2E00B204D6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7062BD8B25629359006D1128 /* Sequence+Ext.swift */,
+				CC0E0F62255EA2C70086C08D /* Constants.swift */,
+				7062BD7425602148006D1128 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		CC7249BC255D86660054C875 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				CC20FF81255EB83F00377478 /* Data.xcdatamodeld */,
 				CCC97FD0255D6D5E000D7C0B /* Section-CoreDataHelpers.swift */,
 				CC7249D3255D87500054C875 /* DecodableCoreData.swift */,
 				CC20FF93255EE17A00377478 /* Topic-CoreDataHelpers.swift */,

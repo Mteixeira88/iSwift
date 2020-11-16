@@ -89,7 +89,7 @@ class ViewModel: ObservableObject {
     
     private func getSlidersView(_ sliders: [Section], small: Bool = true) -> [UIHostingController<AnyView>] {
         if !small {
-            return sliders.map({ slider in
+            return sliders.prefix(6).map({ slider in
                 let model = SlideItemViewModel(
                     id: slider.id ?? "",
                     title: slider.dev ?? "No dev",
@@ -104,7 +104,7 @@ class ViewModel: ObservableObject {
         
         var slidersView = [UIHostingController<AnyView>]()
         var newSliders = [SlideItemViewModel]()
-        sliders.enumerated().forEach { (index, slider) in
+        sliders.prefix(12).enumerated().forEach { (index, slider) in
             let model = SlideItemViewModel(
                 id: slider.id ?? "",
                 title: slider.dev ?? "No dev",
