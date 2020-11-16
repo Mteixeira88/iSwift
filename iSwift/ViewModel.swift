@@ -29,7 +29,7 @@ class ViewModel: ObservableObject {
     
     init(dataController: DataController) {
         self.dataController = dataController
-        //        dataController.deleteAll()
+//                dataController.deleteAll()
         networkManager = NetworkManager(dataController: dataController)
         getContent()
     }
@@ -48,7 +48,9 @@ class ViewModel: ObservableObject {
                       let sections =  menuSections.allObjects as? [Section] else {
                     return
                 }
-                buildSliders(with: menu, sliders: sections)
+                DispatchQueue.main.async {
+                    self.buildSliders(with: menu, sliders: sections)
+                }
             }
         }
         
@@ -71,7 +73,7 @@ class ViewModel: ObservableObject {
                 }
                 if self.needsCacheUpdate(for: allMenus.map({ $0 })) {
                     self.needCacheUpdate = true
-                    self.getSections(with: allMenus.map({ $0 }))
+                    self.getSections(with: allMenus.sorted(by: { $0.order < $1.order }).map({ $0 }))
                 }
             }
             .store(in: &requests)
@@ -98,8 +100,8 @@ class ViewModel: ObservableObject {
         }
     }
     
-    private func getSlidersView(_ sliders: [Section]) -> [UIHostingController<AnyView>] {
-        if self.sliders.isEmpty {
+    private func getSlidersView(_ sliders: [Section], small: Bool = true) -> [UIHostingController<AnyView>] {
+        if !small {
             return sliders.map({ slider in
                 let model = SlideItemViewModel(
                     id: slider.id ?? "",
@@ -108,8 +110,7 @@ class ViewModel: ObservableObject {
                     image: Image(systemName: "")
                 )
                 return UIHostingController(
-                    rootView:
-                        AnyView(FullSlidePageView(model: model))
+                    rootView: AnyView(FullSlidePageView(model: model))
                 )
             })
         }
@@ -124,17 +125,13 @@ class ViewModel: ObservableObject {
                 image: Image(systemName: "")
             )
             newSliders.append(model)
-            if (index + 1).isMultiple(of: 2) {
-                slidersView.append(UIHostingController(
-                    rootView:
-                        AnyView(ListSlidePageView(model: newSliders))
-                ))
+            if (index + 1).isMultiple(of: 2) ||  index == sliders.count - 1 {
+                slidersView.append(
+                    UIHostingController(
+                        rootView: AnyView(ListSlidePageView(model: newSliders))
+                    )
+                )
                 newSliders = []
-            } else if index == sliders.count - 1 {
-                slidersView.append(UIHostingController(
-                    rootView:
-                        AnyView(ListSlidePageView(model: newSliders))
-                ))
             }
         }
         return slidersView
@@ -146,7 +143,7 @@ class ViewModel: ObservableObject {
                 id: menu.id ?? "",
                 title: menu.name ?? "No menu",
                 order: menu.order,
-                items: getSlidersView(sliders)
+                items: getSlidersView(sliders, small: menu.order != 0)
             )
         )
         self.sliders = self.sliders.sorted(by: \SlidePageViewModel.order)
@@ -193,7 +190,6 @@ class ViewModel: ObservableObject {
         }
         
         dataController.save()
-        needCacheUpdate = false
     }
 }
 

@@ -16,8 +16,10 @@ struct HomeView: View {
                         ForEach(viewModel.sliders) { slider in
                             VStack(alignment: .leading) {
                                 Text(slider.title)
+                                if !slider.items.isEmpty {
                                     PageViewController(controllers: slider.items)
                                         .frame(width: geometry.size.width - 32, height: 200)
+                                }
                             }
                         }
                     }
