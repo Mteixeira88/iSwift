@@ -31,6 +31,7 @@ struct PageViewController: UIViewControllerRepresentable {
         let parent: PageViewController
 
         init(_ parent: PageViewController) {
+            
             self.parent = parent
         }
     }

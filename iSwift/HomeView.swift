@@ -13,13 +13,26 @@ struct HomeView: View {
             GeometryReader { geometry in
                 NavigationView {
                     ScrollView(showsIndicators: false) {
-                        ForEach(viewModel.sliders) { slider in
-                            VStack(alignment: .leading) {
-                                Text(slider.title)
-                                if !slider.items.isEmpty {
-                                    PageViewController(controllers: slider.items)
-                                        .frame(width: geometry.size.width - 32, height: 200)
+                        Divider()
+                        VStack(alignment: .leading) {
+                            ForEach(viewModel.sliders) { slider in
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text(slider.title)
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        Spacer()
+                                        NavigationLink(destination: Text(slider.title)) {
+                                            Text("See all")
+                                        }
+                                    }
+                                    if !slider.items.isEmpty {
+                                        PageViewController(controllers: slider.items)
+                                            .frame(width: geometry.size.width - 32, height: 200)
+                                    }
                                 }
+                                .padding()
+                                Divider()
                             }
                         }
                     }

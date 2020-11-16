@@ -4,27 +4,27 @@ struct FullSlidePageView: View {
     var model: SlideItemViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 40) {
-            HStack {
-                Spacer()
+        NavigationLink(destination: Text(model.title)) {
+            VStack(alignment: .leading) {
                 Text(model.title)
-                Spacer()
+                    .foregroundColor(.blue)
+                AsyncImage(url: model.imageURL)
+                    .cornerRadius(10)
             }
-            Spacer()
         }
-        .background(Color.red)
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
 struct SlidePageView_Previews: PreviewProvider {
     static var previews: some View {
         FullSlidePageView(model:
-                        SlideItemViewModel(
-                            id: "",
-                            title: "title",
-                            description: "description",
-                            image: Image(systemName: "person")
-                        )
+                            SlideItemViewModel(
+                                id: "",
+                                title: "title",
+                                description: "description",
+                                imageURL: ""
+                            )
         )
     }
 }

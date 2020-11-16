@@ -2,20 +2,6 @@ import SwiftUI
 import CoreData
 import Combine
 
-struct SlidePageViewModel: Identifiable {
-    let id: String
-    let title: String
-    let order: Int16
-    var items: [UIHostingController<AnyView>]
-}
-
-struct SlideItemViewModel: Identifiable {
-    let id: String
-    let title: String
-    let description: String
-    let image: Image
-}
-
 class ViewModel: ObservableObject {
     @Published var sliders = [SlidePageViewModel]()
     @Published var isLoading = false
@@ -26,6 +12,7 @@ class ViewModel: ObservableObject {
     private let developersCoreData = NSFetchRequest<Main>(entityName: Main.entityName)
     private var coreDataResult = [Main]()
     private var needCacheUpdate = false
+    static let imageCache = NSCache<AnyObject, AnyObject>()
     
     init(dataController: DataController) {
         self.dataController = dataController
@@ -107,7 +94,7 @@ class ViewModel: ObservableObject {
                     id: slider.id ?? "",
                     title: slider.dev ?? "No dev",
                     description: "",
-                    image: Image(systemName: "")
+                    imageURL: slider.background ?? ""
                 )
                 return UIHostingController(
                     rootView: AnyView(FullSlidePageView(model: model))
@@ -122,7 +109,7 @@ class ViewModel: ObservableObject {
                 id: slider.id ?? "",
                 title: slider.dev ?? "No dev",
                 description: "",
-                image: Image(systemName: "")
+                imageURL: slider.profilePic ?? ""
             )
             newSliders.append(model)
             if (index + 1).isMultiple(of: 2) ||  index == sliders.count - 1 {
