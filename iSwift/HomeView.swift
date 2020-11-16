@@ -4,28 +4,28 @@ struct HomeView: View {
     static let tag: String? = "Home"
     
     @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var dataController: DataController
-    @Environment(\.managedObjectContext) var managedObjectContext
     
     var body: some View {
         
         if viewModel.isLoading {
             ProgressView()
         } else {
-            NavigationView {
-                List {
-                    ForEach(viewModel.developers) { dev in
-                        VStack(alignment: .leading) {
-                            Text(dev.name ?? "No dev")
-                            NavigationLink(destination: Text(dev.name ?? "No dev")) {
-                                Text(dev.linkId ?? "No dev")
+            GeometryReader { geometry in
+                NavigationView {
+                    ScrollView(showsIndicators: false) {
+                        ForEach(viewModel.sliders) { slider in
+                            VStack(alignment: .leading) {
+                                Text(slider.title)
+                                    PageViewController(controllers: slider.items)
+                                        .frame(width: geometry.size.width - 32, height: 200)
                             }
                         }
                     }
+                    .navigationTitle(Text("Home"))
                 }
-                .navigationTitle(Text("Home"))
             }
         }
+        
     }
 }
 

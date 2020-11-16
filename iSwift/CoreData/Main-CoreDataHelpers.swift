@@ -6,7 +6,7 @@ class Main: NSManagedObject, Decodable {
     static let entityName = "Main"
     
     enum CodingKeys: String, CodingKey {
-        case id, name, linkId, updatedAt, order
+        case id, name, linkTo, updatedAt, order
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -19,7 +19,7 @@ class Main: NSManagedObject, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        linkId = try container.decode(String.self, forKey: .linkId)
+        linkTo = try container.decode(String.self, forKey: .linkTo)
         updatedAt = try container.decode(Date.self, forKey: .updatedAt)
         order = Int16(try container.decode(Int.self, forKey: .order))
     }

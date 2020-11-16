@@ -6,8 +6,8 @@ class DataController: ObservableObject {
     
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "Data")
-//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+//        container.viewContext.automaticallyMergesChangesFromParent = true
         
         if inMemory {
             container
@@ -46,8 +46,18 @@ class DataController: ObservableObject {
         container.viewContext.delete(object)
     }
     
+    func deleteEntity(_ entity: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        _ = try? container.viewContext.execute(batchDeleteRequest)
+    }
+    
     func deleteAll() {
-        let fetchDeveloperRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Developer.entityName)
+        let fetchMainRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Main.entityName)
+        let batchDeleteRequestMain = NSBatchDeleteRequest(fetchRequest: fetchMainRequest)
+        _ = try? container.viewContext.execute(batchDeleteRequestMain)
+        
+        let fetchDeveloperRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Section.entityName)
         let batchDeleteRequestDeveloper = NSBatchDeleteRequest(fetchRequest: fetchDeveloperRequest)
         _ = try? container.viewContext.execute(batchDeleteRequestDeveloper)
         
@@ -64,24 +74,24 @@ class DataController: ObservableObject {
         let viewContext = container.viewContext
         
         for i in 1...5 {
-            let developer = Developer(context: viewContext)
-            developer.id = UUID().uuidString
-            developer.dev = "Dev \(i)"
-            developer.background = ""
-            developer.profilePic = ""
-            developer.updatedAt = Date()
-            developer.topics = []
+            let section = Section(context: viewContext)
+            section.id = UUID().uuidString
+            section.dev = "Dev \(i)"
+            section.background = ""
+            section.profilePic = ""
+            section.updatedAt = Date()
+            section.topics = []
             
             let social = Social(context: viewContext)
             social.github = "https://www.github.com"
             social.twitter = "https://www.twitter.com"
             
-            developer.social = social
+            section.social = social
             
             for j in 1...4 {
                 let topic = Topic(context: viewContext)
                 topic.id = UUID().uuidString
-                topic.developer = developer
+                topic.section = section
                 topic.name = "Topic \(j)"
             }
         }

@@ -2,14 +2,14 @@ import Foundation
 import CoreData
 
 
-class Developer: NSManagedObject, Decodable {
-    static let entityName = "Developer"
+class Section: NSManagedObject, Decodable {
+    static let entityName = "Section"
     
-    static var example: [Developer] {
+    static var example: [Section] {
         let controller = DataController(inMemory: true)
         let viewContext = controller.container.viewContext
         
-        let developer = Developer(context: viewContext)
+        let developer = Section(context: viewContext)
         developer.dev = "Anonymus"
         developer.id = UUID().uuidString
         developer.background = ""
