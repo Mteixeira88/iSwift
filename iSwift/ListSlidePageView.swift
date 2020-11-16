@@ -14,11 +14,11 @@ struct ListSlidePageView: View {
                         .frame(height: 70)
                     Spacer()
                 }
+                
+                if index.isMultiple(of: 2) {
+                    Divider()
+                }
                 Spacer()
-            }
-            
-            if index.isMultiple(of: 2) {
-                Divider()
             }
         }
     }
