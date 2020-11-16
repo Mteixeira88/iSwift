@@ -5,26 +5,49 @@ import Combine
 class ViewModel: ObservableObject {
     @Published var sliders = [SlidePageViewModel]()
     @Published var isLoading = false
+    @Published var topics = [Topic]()
     
     private var networkManager: NetworkManager
     private var dataController: DataController
     private var requests = Set<AnyCancellable>()
-    private let developersCoreData = NSFetchRequest<Main>(entityName: Main.entityName)
+    private let mainCoreData = NSFetchRequest<Main>(entityName: Main.entityName)
+    private let sectionCoreData = NSFetchRequest<Section>(entityName: Section.entityName)
     private var coreDataResult = [Main]()
     private var needCacheUpdate = false
     static let imageCache = NSCache<AnyObject, AnyObject>()
     
     init(dataController: DataController) {
         self.dataController = dataController
-//                dataController.deleteAll()
         networkManager = NetworkManager(dataController: dataController)
         getContent()
     }
     
+    // MARK: - Public func
+    func getTopicsBy(sectionId: String) {
+        self.topics = []
+        let viewContext = dataController.container.viewContext
+        guard let result = try? viewContext.fetch(sectionCoreData),
+              let section = result.first(where: { $0.id == sectionId }),
+              let topicId = section.topicId,
+              let url = URL(string: "https://jsonblob.com/api/jsonBlob/\(topicId)") else {
+            return
+        }
+        
+        networkManager.fetch(url, defaultValue: [Topic]())
+            .collect()
+            .sink { topicsValues in
+                let topics = topicsValues.joined()
+                self.topics = topics.map({ $0 })
+            }
+            .store(in: &requests)
+    }
+    
+    
+    // MARK: - Private func
     private func getContent() {
         isLoading = true
         let viewContext = dataController.container.viewContext
-        guard let result = try? viewContext.fetch(developersCoreData) else {
+        guard let result = try? viewContext.fetch(mainCoreData) else {
             return
         }
         
@@ -149,7 +172,7 @@ class ViewModel: ObservableObject {
     
     private func updateCache(with menu: Main, sliders: [Section]) {
         let viewContext = dataController.container.viewContext
-        guard let result = try? viewContext.fetch(developersCoreData) else {
+        guard let result = try? viewContext.fetch(mainCoreData) else {
             return
         }
         
@@ -174,6 +197,7 @@ class ViewModel: ObservableObject {
             section.main = main
             section.profilePic = slider.profilePic
             section.dev = slider.dev
+            section.topicId = slider.topicId
         }
         
         dataController.save()

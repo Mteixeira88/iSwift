@@ -13,6 +13,7 @@
         <attribute name="dev" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="profilePic" optional="YES" attributeType="String"/>
+        <attribute name="topicId" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="main" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Main" inverseName="sections" inverseEntity="Main"/>
         <relationship name="social" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Social" inverseName="section" inverseEntity="Social"/>
@@ -30,7 +31,7 @@
     </entity>
     <elements>
         <element name="Main" positionX="-9" positionY="90" width="128" height="119"/>
-        <element name="Section" positionX="-36" positionY="9" width="128" height="149"/>
+        <element name="Section" positionX="-36" positionY="9" width="128" height="164"/>
         <element name="Social" positionX="18" positionY="108" width="128" height="74"/>
         <element name="Topic" positionX="-9" positionY="72" width="128" height="74"/>
     </elements>

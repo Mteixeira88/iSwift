@@ -4,7 +4,7 @@ struct FullSlidePageView: View {
     var model: SlideItemViewModel
     
     var body: some View {
-        NavigationLink(destination: Text(model.title)) {
+        NavigationLink(destination: DetailsView(id: model.id)) {
             VStack(alignment: .leading) {
                 Text(model.title)
                     .foregroundColor(.blue)

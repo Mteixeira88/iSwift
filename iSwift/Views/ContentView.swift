@@ -20,8 +20,6 @@ struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
         ContentView()
-            .environment(\.managedObjectContext, dataController.container.viewContext)
-            .environmentObject(dataController)
             .environmentObject(viewModel)
     }
 }

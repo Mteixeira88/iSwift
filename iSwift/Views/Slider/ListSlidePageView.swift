@@ -5,7 +5,7 @@ struct ListSlidePageView: View {
     
     var body: some View {
         ForEach(model.indices) { index in
-            NavigationLink(destination: Text(model[index].title)) {
+            NavigationLink(destination: DetailsView(id: model[index].id)) {
                 VStack {
                     HStack {
                         AsyncImage(url: model[index].imageURL)
