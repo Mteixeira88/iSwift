@@ -3,16 +3,29 @@ import SwiftUI
 struct FullSlidePageView: View {
     var model: SlideItemViewModel
     
+    @EnvironmentObject var dataController: DataController
+    
     var body: some View {
-        NavigationLink(destination: DetailsView(id: model.id)) {
-            VStack(alignment: .leading) {
-                Text(model.title)
-                    .foregroundColor(.blue)
-                AsyncImage(url: model.imageURL)
-                    .cornerRadius(10)
+        GeometryReader { geo in
+            NavigationLink(
+                destination: DetailsView(
+                    viewModel:
+                        TopicViewModel(
+                            dataController: dataController
+                        ),
+                        id: model.id
+                )
+            ) {
+                VStack(alignment: .leading) {
+                    Text(model.title)
+                        .foregroundColor(.blue)
+                    AsyncImage(url: model.imageURL)
+                        .frame(width: geo.size.width, height: 150)
+                        .cornerRadius(10)
+                }
             }
+            .buttonStyle(PlainButtonStyle())
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 

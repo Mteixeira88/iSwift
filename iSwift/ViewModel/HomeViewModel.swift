@@ -2,18 +2,15 @@ import SwiftUI
 import CoreData
 import Combine
 
-class ViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     @Published var sliders = [SlidePageViewModel]()
     @Published var isLoading = false
-    @Published var topics = [Topic]()
     
     private var networkManager: NetworkManager
     private var dataController: DataController
     private var requests = Set<AnyCancellable>()
     private let mainCoreData = NSFetchRequest<Main>(entityName: Main.entityName)
-    private let sectionCoreData = NSFetchRequest<Section>(entityName: Section.entityName)
     private var coreDataResult = [Main]()
-    private var needCacheUpdate = false
     static let imageCache = NSCache<AnyObject, AnyObject>()
     
     init(dataController: DataController) {
@@ -21,27 +18,6 @@ class ViewModel: ObservableObject {
         networkManager = NetworkManager(dataController: dataController)
         getContent()
     }
-    
-    // MARK: - Public func
-    func getTopicsBy(sectionId: String) {
-        self.topics = []
-        let viewContext = dataController.container.viewContext
-        guard let result = try? viewContext.fetch(sectionCoreData),
-              let section = result.first(where: { $0.id == sectionId }),
-              let topicId = section.topicId,
-              let url = URL(string: "https://jsonblob.com/api/jsonBlob/\(topicId)") else {
-            return
-        }
-        
-        networkManager.fetch(url, defaultValue: [Topic]())
-            .collect()
-            .sink { topicsValues in
-                let topics = topicsValues.joined()
-                self.topics = topics.map({ $0 })
-            }
-            .store(in: &requests)
-    }
-    
     
     // MARK: - Private func
     private func getContent() {
@@ -76,14 +52,15 @@ class ViewModel: ObservableObject {
             .fetch(url, defaultValue: [Main]())
             .collect()
             .sink { [weak self] menusValue in
-                let allMenus = menusValue.joined()
+                let allMenus = menusValue.joined().sorted(by: { $0.order < $1.order }).map({ $0 })
                 guard let self = self else {
                     return
                     
                 }
-                if self.needsCacheUpdate(for: allMenus.map({ $0 })) {
-                    self.needCacheUpdate = true
-                    self.getSections(with: allMenus.sorted(by: { $0.order < $1.order }).map({ $0 }))
+                print(self.needsCacheUpdate(for: allMenus))
+                if !allMenus.isEmpty,
+                   self.needsCacheUpdate(for: allMenus) {
+                    self.getSections(with: allMenus)
                 }
             }
             .store(in: &requests)
@@ -100,11 +77,9 @@ class ViewModel: ObservableObject {
                 .collect()
                 .sink { [weak self] slidersValue in
                     guard let self = self else { return }
-                    let allSliders = slidersValue.joined()
-                    self.buildSliders(with: menu, sliders: allSliders.map { $0 })
-                    if self.needCacheUpdate {
-                        self.updateCache(with: menu, sliders: allSliders.map { $0 })
-                    }
+                    let allSliders = slidersValue.joined().map { $0 }
+                    self.buildSliders(with: menu, sliders: allSliders)
+                    self.updateCache(with: menu, sliders: allSliders)
                 }
                 .store(in: &requests)
         }
@@ -115,7 +90,7 @@ class ViewModel: ObservableObject {
             return sliders.prefix(6).map({ slider in
                 let model = SlideItemViewModel(
                     id: slider.id ?? "",
-                    title: slider.dev ?? "No dev",
+                    title: slider.name ?? "No dev",
                     description: "",
                     imageURL: slider.background ?? ""
                 )
@@ -130,7 +105,7 @@ class ViewModel: ObservableObject {
         sliders.prefix(12).enumerated().forEach { (index, slider) in
             let model = SlideItemViewModel(
                 id: slider.id ?? "",
-                title: slider.dev ?? "No dev",
+                title: slider.name ?? "No dev",
                 description: "",
                 imageURL: slider.profilePic ?? ""
             )
@@ -159,8 +134,6 @@ class ViewModel: ObservableObject {
         self.sliders = self.sliders.sorted(by: \SlidePageViewModel.order)
         isLoading = false
     }
-    
-    
     
     private func needsCacheUpdate(for menus: [Main]) -> Bool {
         if !menus.elementsEqual(coreDataResult, by: { $0.updatedAt == $1.updatedAt }) {
@@ -196,7 +169,7 @@ class ViewModel: ObservableObject {
             section.background = slider.background
             section.main = main
             section.profilePic = slider.profilePic
-            section.dev = slider.dev
+            section.name = slider.name
             section.topicId = slider.topicId
         }
         

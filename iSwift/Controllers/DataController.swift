@@ -4,6 +4,10 @@ import SwiftUI
 class DataController: ObservableObject {
     let container: NSPersistentCloudKitContainer
     
+    
+    private let mainCoreData = NSFetchRequest<Main>(entityName: Main.entityName)
+    private let sectionCoreData = NSFetchRequest<Section>(entityName: Section.entityName)
+    
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "Data")
         container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
@@ -76,7 +80,7 @@ class DataController: ObservableObject {
         for i in 1...5 {
             let section = Section(context: viewContext)
             section.id = UUID().uuidString
-            section.dev = "Dev \(i)"
+            section.name = "Dev \(i)"
             section.background = ""
             section.profilePic = ""
             section.updatedAt = Date()

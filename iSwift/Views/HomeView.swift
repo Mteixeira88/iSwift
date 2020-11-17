@@ -3,10 +3,9 @@ import SwiftUI
 struct HomeView: View {
     static let tag: String? = "Home"
     
-    @EnvironmentObject var viewModel: ViewModel
+    @ObservedObject var viewModel: HomeViewModel
     
     var body: some View {
-        
         if viewModel.isLoading {
             ProgressView()
         } else {
@@ -46,6 +45,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(viewModel: HomeViewModel(dataController: DataController()))
     }
 }

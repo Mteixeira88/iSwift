@@ -25,12 +25,13 @@ class ImageLoader: ObservableObject {
             .replaceError(with: nil)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                guard let self = self,
-                      let image = $0 else{
+                guard let self = self else { return }
+                guard let imageToCache = $0 else {
+                    self.image = UIImage(named: "placeholder")
                     return
                 }
-                self.image = image
-                ImageLoader.imageCache.setObject(image, forKey: NSString(string: self.url))
+                self.image = imageToCache
+                ImageLoader.imageCache.setObject(imageToCache, forKey: NSString(string: self.url))
             }
     }
     
