@@ -2,9 +2,10 @@ import SwiftUI
 
 struct AsyncImage: View {
     @StateObject private var loader: ImageLoader
+
     
-    init(url: String) {
-        _loader = StateObject(wrappedValue: ImageLoader(url: url))
+    init(url: String, dataController: DataController) {
+        _loader = StateObject(wrappedValue: ImageLoader(url: url, dataController: dataController))
     }
     
     var body: some View {

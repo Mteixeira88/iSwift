@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ImagesData" representedClassName=".ImagesData" syncable="YES" codeGenerationType="category">
+        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="link" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="Main" representedClassName=".Main" syncable="YES" codeGenerationType="category">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="linkTo" optional="YES" attributeType="String"/>
@@ -37,5 +42,6 @@
         <element name="Section" positionX="-36" positionY="9" width="128" height="179"/>
         <element name="Social" positionX="18" positionY="108" width="128" height="74"/>
         <element name="Topic" positionX="-9" positionY="72" width="128" height="104"/>
+        <element name="ImagesData" positionX="-9" positionY="99" width="128" height="74"/>
     </elements>
 </model>

@@ -19,7 +19,7 @@ struct FullSlidePageView: View {
                 VStack(alignment: .leading) {
                     Text(model.title)
                         .foregroundColor(.blue)
-                    AsyncImage(url: model.imageURL)
+                    AsyncImage(url: model.imageURL, dataController: dataController)
                         .frame(width: geo.size.width, height: 150)
                         .cornerRadius(10)
                 }

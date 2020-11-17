@@ -21,6 +21,7 @@ struct AuthorModel {
 
 struct DetailsView: View {
     @ObservedObject var viewModel: TopicViewModel
+    @EnvironmentObject var dataController: DataController
     var id: String
     
     var body: some View {
@@ -30,7 +31,7 @@ struct DetailsView: View {
             } else {
                 VStack(alignment: .leading) {
                     HStack {
-                        AsyncImage(url: viewModel.topics.author.image)
+                        AsyncImage(url: viewModel.topics.author.image, dataController: dataController)
                             .frame(width: 60, height: 60)
                             .cornerRadius(60)
                         VStack(alignment: .leading) {

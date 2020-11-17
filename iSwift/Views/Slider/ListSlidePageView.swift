@@ -16,7 +16,7 @@ struct ListSlidePageView: View {
             ) {
                 VStack {
                     HStack {
-                        AsyncImage(url: model[index].imageURL)
+                        AsyncImage(url: model[index].imageURL, dataController: dataController)
                             .frame(width: 30, height: 30)
                             .cornerRadius(30)
                         Text(model[index].title)

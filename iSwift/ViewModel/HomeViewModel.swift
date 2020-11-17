@@ -34,9 +34,7 @@ class HomeViewModel: ObservableObject {
                       let sections =  menuSections.allObjects as? [Section] else {
                     return
                 }
-                DispatchQueue.main.async {
-                    self.buildSliders(with: menu, sliders: sections)
-                }
+                self.buildSliders(with: menu, sliders: sections)                
             }
         }
         
@@ -57,7 +55,6 @@ class HomeViewModel: ObservableObject {
                     return
                     
                 }
-                print(self.needsCacheUpdate(for: allMenus))
                 if !allMenus.isEmpty,
                    self.needsCacheUpdate(for: allMenus) {
                     self.getSections(with: allMenus)
@@ -131,13 +128,18 @@ class HomeViewModel: ObservableObject {
                 items: getSlidersView(sliders, small: menu.order != 0)
             )
         )
-        self.sliders = self.sliders.sorted(by: \SlidePageViewModel.order)
-        isLoading = false
+        DispatchQueue.main.async {
+            self.sliders = self.sliders.sorted(by: \SlidePageViewModel.order)
+            self.isLoading = false
+        }
     }
     
     private func needsCacheUpdate(for menus: [Main]) -> Bool {
         if !menus.elementsEqual(coreDataResult, by: { $0.updatedAt == $1.updatedAt }) {
+            dataController.deleteEntity(Main.entityName)
+            dataController.deleteEntity(Section.entityName)
             sliders = []
+            isLoading = true
             return true
         }
         return false
@@ -171,6 +173,7 @@ class HomeViewModel: ObservableObject {
             section.profilePic = slider.profilePic
             section.name = slider.name
             section.topicId = slider.topicId
+            section.detail = slider.detail
         }
         
         dataController.save()
