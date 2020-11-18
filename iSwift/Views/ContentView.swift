@@ -10,7 +10,17 @@ struct ContentView: View {
             HomeView(viewModel: HomeViewModel(dataController: dataController))
                 .tag(HomeView.tag)
                 .tabItem {
-                    Image(systemName: "house")
+                    Image(systemName: selectedView == HomeView.tag || selectedView == nil ? "house.fill" : "house")
+                }
+            FavoritesView()
+                .tag(FavoritesView.tag)
+                .tabItem {
+                    Image(systemName: selectedView == "Favorites" ? "star.fill" : "star")
+                }
+            Text("Settings")
+                .tag("Settings")
+                .tabItem {
+                    Image(systemName: selectedView == "Settings" ? "person.fill" : "person")
                 }
         }
         .accentColor(Color.orange)

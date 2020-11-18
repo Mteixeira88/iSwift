@@ -112,7 +112,9 @@ class HomeViewModel: ObservableObject {
         
         var slidersView = [UIHostingController<AnyView>]()
         var newSliders = [SlideItemViewModel]()
-        sliders.prefix(12).enumerated().forEach { (index, slider) in
+        sliders
+            .sorted(by: { $0.updatedAt!.compare($1.updatedAt!) == .orderedDescending })
+            .prefix(12).enumerated().forEach { (index, slider) in
             let model = SlideItemViewModel(
                 id: slider.id ?? "",
                 title: slider.name ?? "No dev",
