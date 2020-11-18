@@ -29,38 +29,49 @@ struct DetailsView: View {
             if viewModel.isLoading {
                 ProgressView()
             } else {
-                VStack(alignment: .leading) {
-                    HStack {
-                        AsyncImage(url: viewModel.topics.author.image, dataController: dataController)
-                            .frame(width: 60, height: 60)
-                            .cornerRadius(60)
-                        VStack(alignment: .leading) {
-                            Text(viewModel.topics.author.name)
-                                .font(.title)
-                            Text(viewModel.topics.author.description)
-                                .font(.caption2)
-                        }
-                        
+                if viewModel.topics.items.isEmpty {
+                    EmptyView {
+                        viewModel.getTopicsBy(id)
                     }
-                    .padding(.horizontal)
-                    Divider()
-                        .padding(.top)
-                    List {
-                        ForEach(viewModel.topics.items) { topic in
-                            NavigationLink(destination: Text(topic.id)) {
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(topic.title)
-                                    Text(topic.description)
-                                        .font(.caption)
-                                        .foregroundColor(Color(UIColor.systemGray))
-                                }
-                                .padding(.bottom, 10)
+                } else {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            AsyncImage(url: viewModel.topics.author.image, dataController: dataController)
+                                .frame(width: 60, height: 60)
+                                .cornerRadius(60)
+                            VStack(alignment: .leading) {
+                                Text(viewModel.topics.author.name)
+                                    .font(.title)
+                                Text(viewModel.topics.author.description)
+                                    .font(.caption2)
                             }
                             
                         }
+                        .padding(.horizontal)
+                        Divider()
+                            .padding(.top)
+                        List {
+                            ForEach(viewModel.topics.items) { topic in
+                                NavigationLink(
+                                    destination: FinalItemsListView(
+                                        viewModel: ArticlesViewModel(dataController: dataController),
+                                        id: topic.id
+                                    )
+                                ) {
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(topic.title)
+                                        Text(topic.description)
+                                            .font(.caption)
+                                            .foregroundColor(Color(UIColor.systemGray))
+                                    }
+                                    .padding(.bottom, 10)
+                                }
+                                
+                            }
+                        }
                     }
+                    .padding(.top)
                 }
-                .padding(.top)
             }
         }
         .navigationBarTitle("Topics", displayMode: .inline)

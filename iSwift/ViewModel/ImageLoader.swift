@@ -23,16 +23,19 @@ class ImageLoader: ObservableObject {
     
     func load() {
         let viewContext = dataController.container.viewContext
+        imageCoreData.predicate = NSPredicate(format: "link = %@", url)
         if let result = try? viewContext.fetch(imageCoreData),
-           let imageFromCache = result.first(where: { $0.link == url}),
-           let data = imageFromCache.data {
-            self.image = UIImage(data: data)
+           !result.isEmpty {
+            DispatchQueue.main.async {
+                self.image = UIImage(data: result[0].data!)
+            }
             return
         }
         
         guard let url = URL(string: url) else {
             return
         }
+        print(url)
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { image -> UIImage? in
                 let object = ImagesData(context: self.dataController.container.viewContext)

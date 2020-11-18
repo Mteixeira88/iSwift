@@ -28,7 +28,17 @@ class HomeViewModel: ObservableObject {
         }
         
         coreDataResult = result
-        if !coreDataResult.isEmpty {
+        if !result.isEmpty {
+            coreDataResult = result.filter({
+                guard let sections = $0.sections else {
+                    return false
+                }
+                if sections.allObjects.isEmpty {
+                    dataController.delete($0)
+                }
+                return !sections.allObjects.isEmpty
+            })
+            
             coreDataResult.forEach { menu in
                 guard let menuSections = menu.sections,
                       let sections =  menuSections.allObjects as? [Section] else {
@@ -57,7 +67,10 @@ class HomeViewModel: ObservableObject {
                 }
                 if !allMenus.isEmpty,
                    self.needsCacheUpdate(for: allMenus) {
+                    print("using server sections")
                     self.getSections(with: allMenus)
+                } else {
+                    self.isLoading = false
                 }
             }
             .store(in: &requests)
@@ -135,7 +148,18 @@ class HomeViewModel: ObservableObject {
     }
     
     private func needsCacheUpdate(for menus: [Main]) -> Bool {
-        if !menus.elementsEqual(coreDataResult, by: { $0.updatedAt == $1.updatedAt }) {
+        let mainCompare = coreDataResult.map({ topic in
+            topic.updatedAt
+        })
+        let mainServer = menus.map { topic in
+            topic.updatedAt
+        }
+        print(mainServer)
+        print(mainCompare)
+        if !mainServer.sorted(by: { $0!.compare($1!) == .orderedDescending })
+            .elementsEqual(
+                mainCompare.sorted(by: { $0!.compare($1!) == .orderedDescending }), by: { $0 == $1 }
+            ) {
             dataController.deleteEntity(Main.entityName)
             dataController.deleteEntity(Section.entityName)
             sliders = []
@@ -147,33 +171,25 @@ class HomeViewModel: ObservableObject {
     
     private func updateCache(with menu: Main, sliders: [Section]) {
         let viewContext = dataController.container.viewContext
+        mainCoreData.predicate = NSPredicate(format: "id = %@", menu.id!)
+        
         guard let result = try? viewContext.fetch(mainCoreData) else {
             return
         }
         
-        // MARK: - TODO Removing duplicates from CoreData
-        let object = result.filter({ $0.id == menu.id } )
-        object.forEach { (duplicate) in
-            dataController.delete(duplicate)
-        }
-        // MARK: - End duplicate CoreData
-        
-        let main = Main(context: viewContext)
-        main.id = menu.id
-        main.linkTo = menu.linkTo
-        main.name = menu.name
-        main.order = menu.order
-        main.updatedAt = menu.updatedAt
+        let managedObject = !result.isEmpty ? result[0] : menu
+        print("caching main")
         
         sliders.forEach { (slider) in
             let section = Section(context: viewContext)
             section.id = slider.id
             section.background = slider.background
-            section.main = main
+            section.main = managedObject
             section.profilePic = slider.profilePic
             section.name = slider.name
             section.topicId = slider.topicId
             section.detail = slider.detail
+            section.updatedAt = slider.updatedAt
         }
         
         dataController.save()

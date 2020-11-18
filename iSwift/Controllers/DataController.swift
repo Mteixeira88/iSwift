@@ -72,6 +72,18 @@ class DataController: ObservableObject {
         let fetchTopicRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Topic.entityName)
         let batchDeleteRequestTopic = NSBatchDeleteRequest(fetchRequest: fetchTopicRequest)
         _ = try? container.viewContext.execute(batchDeleteRequestTopic)
+        
+        let fetchArticleRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Article.entityName)
+        let batchDeleteRequestArticle = NSBatchDeleteRequest(fetchRequest: fetchArticleRequest)
+        _ = try? container.viewContext.execute(batchDeleteRequestArticle)
+        
+        let fetchArticleContentRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ArticleContent.entityName)
+        let batchDeleteRequestArticleContent = NSBatchDeleteRequest(fetchRequest: fetchArticleContentRequest)
+        _ = try? container.viewContext.execute(batchDeleteRequestArticleContent)
+        
+        let fetchArticleInfoRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ArticleInfo.entityName)
+        let batchDeleteRequestArticleInfo = NSBatchDeleteRequest(fetchRequest: fetchArticleInfoRequest)
+        _ = try? container.viewContext.execute(batchDeleteRequestArticleInfo)
     }
     
     func createSampleData() throws {

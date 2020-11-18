@@ -13,6 +13,7 @@ struct ContentView: View {
                     Image(systemName: "house")
                 }
         }
+        .accentColor(Color.orange)
     }
 }
 

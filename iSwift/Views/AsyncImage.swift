@@ -15,12 +15,11 @@ struct AsyncImage: View {
     
     private var content: some View {
         Group {
-            if loader.image != nil {
-                Image(uiImage: loader.image!)
+            if let image = loader.image {
+                Image(uiImage: image)
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                
             } else {
                 ProgressView()
             }
