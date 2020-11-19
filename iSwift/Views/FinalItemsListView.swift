@@ -1,4 +1,5 @@
 import SwiftUI
+import SafariServices
 
 struct FinalItemModelView: Identifiable {
     let id: String
@@ -11,6 +12,7 @@ struct ArticleModelView: Identifiable {
     let id: String
     let title: String
     let detail: String
+    let url: URL
 }
 
 struct FinalItemsListView: View {
@@ -45,7 +47,7 @@ struct FinalItemsListView: View {
                             .padding(.vertical, 10)
                             
                             ForEach(article.content) { content in
-                                NavigationLink(destination: Text("Link")) {
+                                Link(destination: content.url) {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 5) {
                                             Text(content.title)

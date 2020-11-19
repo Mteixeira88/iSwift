@@ -56,13 +56,13 @@
         <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="topics" inverseEntity="Section"/>
     </entity>
     <elements>
+        <element name="Article" positionX="-9" positionY="99" width="128" height="74"/>
+        <element name="ArticleContent" positionX="9" positionY="117" width="128" height="104"/>
+        <element name="ArticleInfo" positionX="0" positionY="108" width="128" height="74"/>
         <element name="ImagesData" positionX="-9" positionY="99" width="128" height="74"/>
         <element name="Main" positionX="-9" positionY="90" width="128" height="119"/>
         <element name="Section" positionX="-36" positionY="9" width="128" height="179"/>
         <element name="Social" positionX="18" positionY="108" width="128" height="74"/>
         <element name="Topic" positionX="-9" positionY="72" width="128" height="119"/>
-        <element name="Article" positionX="-9" positionY="99" width="128" height="74"/>
-        <element name="ArticleInfo" positionX="0" positionY="108" width="128" height="74"/>
-        <element name="ArticleContent" positionX="9" positionY="117" width="128" height="104"/>
     </elements>
 </model>

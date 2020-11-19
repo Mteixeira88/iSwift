@@ -17,10 +17,11 @@ class HomeViewModel: ObservableObject {
         self.dataController = dataController
         networkManager = NetworkManager(dataController: dataController)
         getContent()
+        print("content")
     }
     
     // MARK: - Private func
-    private func getContent() {
+     func getContent() {
         isLoading = true
         let viewContext = dataController.container.viewContext
         guard let result = try? viewContext.fetch(mainCoreData) else {

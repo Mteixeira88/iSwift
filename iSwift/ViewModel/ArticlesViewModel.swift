@@ -29,8 +29,6 @@ class ArticlesViewModel: ObservableObject {
             return
         }
         
-        print(url)
-        
         networkManager.fetch(url, defaultValue: [Article]())
             .collect()
             .sink { [weak self] articlesValue in
@@ -61,11 +59,12 @@ class ArticlesViewModel: ObservableObject {
                 id: article.id ?? "",
                 sectionName: article.additionalInfo?.title ?? "",
                 sectionDetail: article.additionalInfo?.detail ?? "",
-                content: content.sorted(by: \ArticleContent.id).map({ (content) -> ArticleModelView in
+                content: content.sorted(by: { $0.id ?? "" > $1.id ?? "Date" }).map({ (content) -> ArticleModelView in
                     ArticleModelView(
                         id: content.id ?? "",
                         title: content.title ?? "",
-                        detail: content.detail ?? ""
+                        detail: content.detail ?? "",
+                        url: URL(string: content.link ?? "")!
                     )
                 })
             )

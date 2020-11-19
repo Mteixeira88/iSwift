@@ -1,27 +1,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    @SceneStorage("selectedView") var selectedView: String?
+    @State private var selectedView = HomeView.tag
     
     @EnvironmentObject var dataController: DataController
     
     var body: some View {
         TabView(selection: $selectedView) {
             HomeView(viewModel: HomeViewModel(dataController: dataController))
+                .tabItem {
+                    Image(systemName: "house")
+                }
                 .tag(HomeView.tag)
+            FavoritesView(viewModel: FavoritesViewModel(dataController: dataController))
                 .tabItem {
-                    Image(systemName: selectedView == HomeView.tag || selectedView == nil ? "house.fill" : "house")
+                    Image(systemName: "star")
                 }
-            FavoritesView()
                 .tag(FavoritesView.tag)
+            SettingsView()
                 .tabItem {
-                    Image(systemName: selectedView == "Favorites" ? "star.fill" : "star")
+                    Image(systemName: "person")
                 }
-            Text("Settings")
-                .tag("Settings")
-                .tabItem {
-                    Image(systemName: selectedView == "Settings" ? "person.fill" : "person")
-                }
+                .tag(SettingsView.tag)
         }
         .accentColor(Color.orange)
     }
@@ -29,10 +29,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var dataController = DataController.preview
-    static var viewModel = HomeViewModel(dataController: dataController)
     
     static var previews: some View {
         ContentView()
-            .environmentObject(viewModel)
+            .environmentObject(dataController)
     }
 }
