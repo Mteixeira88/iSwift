@@ -19,7 +19,6 @@ struct FinalItemsListView: View {
     @ObservedObject var viewModel: ArticlesViewModel
     var id: String
     
-    
     var body: some View {
         Group {
             if viewModel.isLoading {

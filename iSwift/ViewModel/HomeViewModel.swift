@@ -98,23 +98,25 @@ class HomeViewModel: ObservableObject {
     
     private func getSlidersView(_ sliders: [Section], small: Bool = true) -> [UIHostingController<AnyView>] {
         if !small {
-            return sliders.prefix(6).map({ slider in
-                let model = SlideItemViewModel(
-                    id: slider.id ?? "",
-                    title: slider.name ?? "No dev",
-                    description: "",
-                    imageURL: slider.background ?? ""
-                )
-                return UIHostingController(
-                    rootView: AnyView(FullSlidePageView(model: model))
-                )
+            return sliders
+                .sorted(by: { $0.updatedAt ?? Date() > $1.updatedAt ?? Date()}).prefix(6)
+                .map({ slider in
+                    let model = SlideItemViewModel(
+                        id: slider.id ?? "",
+                        title: slider.name ?? "No dev",
+                        description: "",
+                        imageURL: slider.background ?? ""
+                    )
+                    return UIHostingController(
+                        rootView: AnyView(FullSlidePageView(model: model))
+                    )
             })
         }
         
         var slidersView = [UIHostingController<AnyView>]()
         var newSliders = [SlideItemViewModel]()
         sliders
-            .sorted(by: { $0.updatedAt!.compare($1.updatedAt!) == .orderedDescending })
+            .sorted(by: { $0.updatedAt ?? Date() > $1.updatedAt ?? Date()})
             .prefix(12).enumerated().forEach { (index, slider) in
             let model = SlideItemViewModel(
                 id: slider.id ?? "",
